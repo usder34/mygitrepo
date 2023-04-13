@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    - pkgname: apache2
+  tasks:
+    - name: Install apache2
+      apt:
+        name: "{{ pkgname }}"
+        state: present
+      notify: restart apache2    
+  handlers:
+    - name: restart apache2
+      service:
+        name: "{{ pkgname }}"
+        state: restarted
