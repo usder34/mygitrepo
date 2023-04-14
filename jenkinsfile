@@ -26,6 +26,7 @@ pipeline {
         stage('set permissions'){
             steps{
                 sh ''' chmod 700 practicelinux.pem
+                sudo mv practicelinux.pem /var/lib/jenkins/
                 sudo mv ansible.cfg /etc/ansible/
                 sudo ansible-playbook jenkinsplaybook.yml
                 '''
