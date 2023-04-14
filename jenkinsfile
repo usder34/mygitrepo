@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('clean'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('install pkg') {
+            steps {
+                sh '''
+                if $install; then
+                sudo apt-get update
+                sudo apt install ansible -y
+                fi
+                '''
+            }
+        }
+        stage('Pull from Git'){
+            steps{
+                git branch: 'main', credentialsId: 'a38a130f-6a4a-4579-b447-915f68a2a41e', url: 'https://github.com/usder34/mygitrepo.git'
+            }
+        }
+        stage('set permissions'){
+            steps{
+                sh ''' chmod 700 practicelinux.pem
+                sudo mv ansible.cfg /etc/ansible/
+                sudo ansible-playbook jenkinsplaybook.yml
+                '''
+            }
+        }
+        
+    }
+}
